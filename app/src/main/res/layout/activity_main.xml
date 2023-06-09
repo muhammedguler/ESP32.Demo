@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        
+        <variable
+            name="viewModel"
+            type="com.atlastek.eps32.MainViewModel" />
+        
+        <import type="com.atlastek.eps32.ble.model.BLEState" />
+        <import type="android.view.View" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/connectionCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
+
+
+                <ImageView
+                    android:id="@+id/infoImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:src="@{viewModel.state == BLEState.Connected ? @drawable/ic_info_green : viewModel.state== BLEState.Connecting ? @drawable/ic_info_orange : @drawable/ic_info_gray, default=@drawable/ic_info_gray}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/connectionTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:ellipsize="end"
+                    android:fontFamily="sans-serif"
+                    android:maxLines="1"
+                    android:text="@{viewModel.state == BLEState.Connected ? @string/connected : viewModel.state == BLEState.Connecting ? @string/connecting : @string/no_connection, default=@string/no_connection}"
+                    android:textColor="@color/brownish_grey"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="@id/infoImageView"
+                    app:layout_constraintEnd_toStartOf="@id/connectionImageView"
+                    app:layout_constraintStart_toEndOf="@id/infoImageView"
+                    app:layout_constraintTop_toTopOf="@id/infoImageView" />
+
+                <ImageView
+                    android:id="@+id/connectionImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:src="@{viewModel.rssi == 1 ? @drawable/ic_signal : viewModel.rssi == 2 ? @drawable/ic_signal_2 : viewModel.rssi == 3 ? @drawable/ic_signal_1 : @drawable/ic_signal_0, default = @drawable/ic_signal_0}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+
+        <Button
+            android:id="@+id/connectButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@{viewModel.state == BLEState.Disconnected ? @string/connect : @string/disconnect, default = @string/connect}"
+            android:textAllCaps="false"
+            android:visibility="@{viewModel.state == BLEState.Connecting ? View.INVISIBLE : View.VISIBLE, default=visible}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/connectionCardView" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{viewModel.state == BLEState.Connecting ? View.VISIBLE : View.GONE, default=gone}"
+            app:layout_constraintBottom_toBottomOf="@id/connectButton"
+            app:layout_constraintEnd_toEndOf="@id/connectButton"
+            app:layout_constraintStart_toStartOf="@id/connectButton"
+            app:layout_constraintTop_toTopOf="@id/connectButton" />
+
+
+        <TextView
+            android:id="@+id/valueTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="32dp"
+            android:textColor="@color/black"
+            android:text="@{viewModel.value}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/connectButton" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

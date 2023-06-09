@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">EPS32</string>
+    <string name="no_connection">Ölçüm cihazına bağlı değilsiniz</string>
+    <string name="connected">Bağlandı</string>
+    <string name="connecting">Bağlanıyor</string>
+    <string name="connect">Bağlan</string>
+    <string name="disconnect">Ayrıl</string>
+</resources>
