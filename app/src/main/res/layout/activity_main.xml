@@ -4,15 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
-        
         <variable
             name="viewModel"
             type="com.atlastek.eps32.MainViewModel" />
-        
         <import type="com.atlastek.eps32.ble.model.BLEState" />
         <import type="android.view.View" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             app:cardCornerRadius="12dp"
             app:cardElevation="5dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -60,7 +56,6 @@
                     android:fontFamily="sans-serif"
                     android:maxLines="1"
                     android:text="@{viewModel.state == BLEState.Connected ? @string/connected : viewModel.state == BLEState.Connecting ? @string/connecting : @string/no_connection, default=@string/no_connection}"
-                    android:textColor="@color/brownish_grey"
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="@id/infoImageView"
                     app:layout_constraintEnd_toStartOf="@id/connectionImageView"
@@ -88,13 +83,13 @@
             android:id="@+id/connectButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:text="@{viewModel.state == BLEState.Disconnected ? @string/connect : @string/disconnect, default = @string/connect}"
             android:textAllCaps="false"
             android:visibility="@{viewModel.state == BLEState.Connecting ? View.INVISIBLE : View.VISIBLE, default=visible}"
+            app:layout_constraintBottom_toTopOf="@+id/graphViewLine"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/connectionCardView" />
+            app:layout_constraintStart_toEndOf="@+id/valueTextView"
+            app:layout_constraintTop_toBottomOf="@+id/connectionCardView" />
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -107,18 +102,29 @@
             app:layout_constraintTop_toTopOf="@id/connectButton" />
 
 
+        <!--line graph view where we will
+         be displaying our data-->
         <TextView
             android:id="@+id/valueTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="32dp"
-            android:layout_marginTop="32dp"
-            android:textColor="@color/black"
+            android:layout_width="290dp"
+            android:layout_height="52dp"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginStart="8dp"
             android:text="@{viewModel.value}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/connectionCardView" />
+
+        <com.jjoe64.graphview.GraphView
+            android:id="@+id/graphViewLine"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/connectButton" />
-
-
+            app:layout_constraintTop_toBottomOf="@+id/valueTextView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -11,5 +11,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface BLEApi {
     suspend fun scanAndConnect(): Peripheral?
-    suspend fun characteristic(peripheral: Peripheral): Characteristic?
+    suspend fun readCharacteristic(peripheral: Peripheral): Characteristic?
+    suspend fun sendCharacteristic(peripheral: Peripheral): Characteristic?
 }
