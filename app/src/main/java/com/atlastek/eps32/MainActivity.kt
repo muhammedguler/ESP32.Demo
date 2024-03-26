@@ -23,8 +23,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var viewDataBinding: ActivityMainBinding
 
 
-
-
     val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
         arrayOf(Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT)
     } else {
@@ -69,6 +67,7 @@ class MainActivity : AppCompatActivity() {
         viewDataBinding.graphViewLine.addSeries(viewModel.ekgCh3Series)
         viewDataBinding.graphViewLine.viewport.isXAxisBoundsManual = true
         //viewDataBinding.graphViewLine.viewport.isYAxisBoundsManual = true
+        viewDataBinding.graphViewLine.gridLabelRenderer.padding = 50
         viewDataBinding.graphViewLine.viewport.setMinX(0.0)
         viewDataBinding.graphViewLine.viewport.setMaxX(1.50)
         //viewDataBinding.graphViewLine.viewport.setMinY(0.0)

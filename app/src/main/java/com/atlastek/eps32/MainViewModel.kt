@@ -40,12 +40,12 @@ class MainViewModel : ViewModel() {
     private var graphLastXValue = 0.0
     var dataCount = 0
     var peripheral: Peripheral? = null
-    var nowSecond =System.currentTimeMillis()/1000.0
-    var oldSecond =System.currentTimeMillis()/1000.0
+    var nowSecond = System.currentTimeMillis() / 1000.0
+    var oldSecond = System.currentTimeMillis() / 1000.0
+
     init {
         bleApi = BLEApiImpl(CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate))
     }
-
     @OptIn(ExperimentalUnsignedTypes::class)
     fun messageParsing(scope: CoroutineScope, array: UByteArray) {
         val id =
@@ -53,12 +53,12 @@ class MainViewModel : ViewModel() {
                     array[1].toString(16).padStart(2, '0') +
                     array[2].toString(16).padStart(2, '0') +
                     array[3].toString(16).padStart(2, '0')
-        val batVoltage = (array[4].toInt() * 256 + array[5].toInt())/1000.0
+        val batVoltage = (array[4].toInt() * 256 + array[5].toInt()) / 1000.0
         val batPercentage = array[6].toInt() * 0.4
         val temperature = array[7]
         val markArrhythmia = array[8]
         val chgStatus = array[9]
-        val sampleRate =(array[10] * 256u + array[11]).toInt() .toDouble()
+        val sampleRate = (array[10] * 256u + array[11]).toInt().toDouble()
         val time = (2000u + array[12]).toString() +
                 "-" + array[13].toString().padStart(2, '0') +
                 "-" + array[14].toString().padStart(2, '0') +
@@ -79,41 +79,41 @@ class MainViewModel : ViewModel() {
 
         for (i in 0..((len / 9) - 3)) {
             val ekgCh1 =
-                (array[18 + i * 9] * 65536u + array[19 + i * 9] * 256u + array[20 + i * 9]).toInt()
-                    .toDouble() / 10485.76
+                ((array[18 + i * 9] * 65536u + array[19 + i * 9] * 256u + array[20 + i * 9]).toInt()
+                    .toDouble() / 10485.76) - 400.0
             val ekgCh2 =
-                (array[21 + i * 9] * 65536u + array[22 + i * 9] * 256u + array[23 + i * 9]).toInt()
-                    .toDouble() / 10485.76
+                ((array[21 + i * 9] * 65536u + array[22 + i * 9] * 256u + array[23 + i * 9]).toInt()
+                    .toDouble() / 10485.76) - 400.0
             val ekgCh3 =
-                (array[24 + i * 9] * 65536u + array[25 + i * 9] * 256u + array[26 + i * 9]).toInt()
-                    .toDouble() / 10485.76
+                ((array[24 + i * 9] * 65536u + array[25 + i * 9] * 256u + array[26 + i * 9]).toInt()
+                    .toDouble() / 10485.76) - 400.0
 
             dataCount += 1
             println("ch1: $ekgCh1 ch2: $ekgCh2 ch3:$ekgCh3")
             //if (dataCount % 2 == 0) {
 
-                scope.async {
-                    try {
+            scope.async {
+                try {
 
-                        ekgCh1Series.appendData(
-                            DataPoint(graphLastXValue, ekgCh1),
-                            true,
-                            1000
-                        )
-                        ekgCh2Series.appendData(
-                            DataPoint(graphLastXValue, ekgCh2),
-                            true,
-                            1000
-                        )
-                        ekgCh3Series.appendData(
-                            DataPoint(graphLastXValue, ekgCh3),
-                            true,
-                            1000
-                        )
-                        graphLastXValue += 1.0/sampleRate
-                    } catch (_: Throwable) {
-                    }
-               // }
+                    ekgCh1Series.appendData(
+                        DataPoint(graphLastXValue, ekgCh1),
+                        true,
+                        1000
+                    )
+                    ekgCh2Series.appendData(
+                        DataPoint(graphLastXValue, ekgCh2),
+                        true,
+                        1000
+                    )
+                    ekgCh3Series.appendData(
+                        DataPoint(graphLastXValue, ekgCh3),
+                        true,
+                        1000
+                    )
+                    graphLastXValue += 1.0 / sampleRate
+                } catch (_: Throwable) {
+                }
+                // }
             }
         }
     }
@@ -174,7 +174,6 @@ class MainViewModel : ViewModel() {
                 } else {
                     state.postValue(BLEState.Disconnected)
                 }
-
             }
         } else {
             state.postValue(BLEState.Disconnected)
