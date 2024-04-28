@@ -90,30 +90,29 @@ class MainViewModel : ViewModel() {
 
             dataCount += 1
             println("ch1: $ekgCh1 ch2: $ekgCh2 ch3:$ekgCh3")
-            //if (dataCount % 2 == 0) {
+            if (dataCount % 10 == 0) {
+                scope.async {
+                    try {
 
-            scope.async {
-                try {
-
-                    ekgCh1Series.appendData(
-                        DataPoint(graphLastXValue, ekgCh1),
-                        true,
-                        1000
-                    )
-                    ekgCh2Series.appendData(
-                        DataPoint(graphLastXValue, ekgCh2),
-                        true,
-                        1000
-                    )
-                    ekgCh3Series.appendData(
-                        DataPoint(graphLastXValue, ekgCh3),
-                        true,
-                        1000
-                    )
-                    graphLastXValue += 1.0 / sampleRate
-                } catch (_: Throwable) {
+                        ekgCh1Series.appendData(
+                            DataPoint(graphLastXValue, ekgCh1),
+                            true,
+                            1000
+                        )
+                        ekgCh2Series.appendData(
+                            DataPoint(graphLastXValue, ekgCh2),
+                            true,
+                            1000
+                        )
+                        ekgCh3Series.appendData(
+                            DataPoint(graphLastXValue, ekgCh3),
+                            true,
+                            1000
+                        )
+                        graphLastXValue += 10.0 / sampleRate
+                    } catch (_: Throwable) {
+                    }
                 }
-                // }
             }
         }
     }
